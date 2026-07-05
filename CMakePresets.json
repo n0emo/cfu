@@ -40,6 +40,10 @@
       "inherits": ["gcc", "release"]
     },
     {
+      "name": "x86_64-w64-mingw32-release",
+      "inherits": ["x86_64-w64-mingw32", "release"]
+    },
+    {
       "name": "web-release",
       "inherits": ["release"],
       "cacheVariables": {
@@ -61,6 +65,18 @@
       "cacheVariables": {
         "CMAKE_C_COMPILER": "gcc",
         "CMAKE_CXX_COMPILER": "g++"
+      }
+    },
+    {
+      "name": "x86_64-w64-mingw32",
+      "hidden": true,
+      "inherits": ["base"],
+      "cacheVariables": {
+        "CMAKE_SYSTEM_NAME": "Windows",
+        "CMAKE_SYSTEM_PROCESSOR": "x86_64",
+        "CMAKE_C_COMPILER": "x86_64-w64-mingw32-gcc",
+        "CMAKE_CXX_COMPILER": "x86_64-w64-mingw32-g++",
+        "CMAKE_RC_COMPILER": "x86_64-w64-mingw32-windres"
       }
     }
   ]

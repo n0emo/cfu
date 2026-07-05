@@ -45,3 +45,9 @@ if(EMSCRIPTEN)
     )
 endif()
 
+if(MINGW)
+    target_link_options(${PROJECT_NAME}-host PRIVATE
+        -static -static-libgcc -static-libstdc++
+    )
+endif()
+
