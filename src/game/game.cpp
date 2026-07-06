@@ -42,7 +42,7 @@ auto Game::frame(this Game& self) -> void {
     systems::update_dev(self.registry);
 
     BeginDrawing();
-    ClearBackground(BLUE);
+    ClearBackground(RED);
 
     rlImGuiBegin();
     StateStack::get(self.registry).draw(self.registry);

@@ -45,6 +45,7 @@ target_link_libraries(${PROJECT_NAME}-game PUBLIC
     EnTT
     Microsoft.GSL::GSL
     imgui_entt_entity_editor
+    Edyn
 )
 
 if(GAME_HOT_RELOAD)
