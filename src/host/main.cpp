@@ -1,6 +1,11 @@
 #if GAME_HOT_RELOAD
 
-#include <raylib.h>
+// From <raylib.h> - manual forward declarations needed because cr.h includes windows.h
+extern "C" {
+typedef enum { LOG_ALL = 0, LOG_TRACE, LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR, LOG_FATAL, LOG_NONE } TraceLogLevel;
+
+void TraceLog(int logLevel, const char *text, ...);
+}
 
 #define CR_DEBUG
 #define CR_HOST
@@ -27,6 +32,7 @@ auto main(int argc, char *argv[]) -> int {
 
 #else
 
+#include <raylib.h>
 #include <game.hpp>
 
 auto main(int argc, char *argv[]) -> int {

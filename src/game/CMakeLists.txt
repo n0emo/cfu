@@ -1,3 +1,5 @@
+include(../cmake/deps.cmake)
+
 if(GAME_HOT_RELOAD)
     add_library(${PROJECT_NAME}-game MODULE)
 else()
@@ -38,18 +40,9 @@ else()
     target_compile_options(${PROJECT_NAME}-game PRIVATE -Wall -Wextra -g)
 endif()
 
-target_link_libraries(${PROJECT_NAME}-game PUBLIC
-    Microsoft.GSL::GSL
-    raylib
-    imgui
-    rlimgui
-    EnTT
-    imgui_entt_entity_editor
-    box2d
-)
+set_dependencies(${PROJECT_NAME}-game)
 
 if(GAME_HOT_RELOAD)
     set_target_properties(${PROJECT_NAME}-game PROPERTIES OUTPUT_NAME plugin)
     target_sources(${PROJECT_NAME}-game PRIVATE plugin.cpp)
-    target_link_libraries(${PROJECT_NAME}-game PRIVATE cr)
 endif()

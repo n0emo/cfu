@@ -1,8 +1,14 @@
 #include <cassert>
 
+// From <raylib.h> - manual forward declarations needed because cr.h includes windows.h
+extern "C" {
+typedef enum { LOG_ALL = 0, LOG_TRACE, LOG_DEBUG, LOG_INFO, LOG_WARNING, LOG_ERROR, LOG_FATAL, LOG_NONE } TraceLogLevel;
+
+void TraceLog(int logLevel, const char *text, ...);
+}
+
 #include <cr.h>
 #include <gsl/gsl>
-#include <raylib.h>
 
 #include <game.hpp>
 

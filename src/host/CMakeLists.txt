@@ -1,3 +1,5 @@
+include(../cmake/deps.cmake)
+
 add_executable(${PROJECT_NAME}-host)
 
 target_sources(${PROJECT_NAME}-host PRIVATE
@@ -13,19 +15,9 @@ target_compile_definitions(${PROJECT_NAME}-host PRIVATE
     -DGAME_HOT_RELOAD=$<BOOL:${GAME_HOT_RELOAD}>
 )
 
-target_link_libraries(${PROJECT_NAME}-host PRIVATE
-    Microsoft.GSL::GSL
-    raylib
-    imgui
-    rlimgui
-    EnTT
-    imgui_entt_entity_editor
-    box2d
-)
+set_dependencies(${PROJECT_NAME}-host)
 
-if(GAME_HOT_RELOAD)
-    target_link_libraries(${PROJECT_NAME}-host PRIVATE cr)
-else()
+if(NOT GAME_HOT_RELOAD)
     target_link_libraries(${PROJECT_NAME}-host PRIVATE ${PROJECT_NAME}-game)
 endif()
 
@@ -51,3 +43,11 @@ if(MINGW)
     )
 endif()
 
+if(GAME_HOT_RELOAD)
+    if (WIN32)
+	add_custom_command(TARGET ${PROJECT_NAME}-host POST_BUILD
+	    COMMAND ${CMAKE_COMMAND} -E copy $<TARGET_RUNTIME_DLLS:${PROJECT_NAME}-host> $<TARGET_FILE_DIR:${PROJECT_NAME}-host>
+	    COMMAND_EXPAND_LISTS
+	)
+    endif()
+endif()
