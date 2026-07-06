@@ -14,13 +14,13 @@ target_compile_definitions(${PROJECT_NAME}-host PRIVATE
 )
 
 target_link_libraries(${PROJECT_NAME}-host PRIVATE
+    Microsoft.GSL::GSL
     raylib
     imgui
     rlimgui
     EnTT
-    Microsoft.GSL::GSL
     imgui_entt_entity_editor
-    Edyn
+    box2d
 )
 
 if(GAME_HOT_RELOAD)

@@ -39,13 +39,13 @@ else()
 endif()
 
 target_link_libraries(${PROJECT_NAME}-game PUBLIC
+    Microsoft.GSL::GSL
     raylib
     imgui
     rlimgui
     EnTT
-    Microsoft.GSL::GSL
     imgui_entt_entity_editor
-    Edyn
+    box2d
 )
 
 if(GAME_HOT_RELOAD)
