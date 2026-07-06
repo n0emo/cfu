@@ -42,11 +42,9 @@ target_link_libraries(${PROJECT_NAME}-game PUBLIC
     raylib
     imgui
     rlimgui
-    box2d
     EnTT
     Microsoft.GSL::GSL
     imgui_entt_entity_editor
-    raylib_box2d_debugdraw
 )
 
 if(GAME_HOT_RELOAD)

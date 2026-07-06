@@ -17,25 +17,23 @@ target_link_libraries(${PROJECT_NAME}-host PRIVATE
     raylib
     imgui
     rlimgui
-    box2d
-    raylib_box2d_debugdraw
     EnTT
     Microsoft.GSL::GSL
 )
 
 if(GAME_HOT_RELOAD)
-    target_link_libraries(${PROJECT_NAME}-host PRIVATE cr)
+  target_link_libraries(${PROJECT_NAME}-host PRIVATE cr)
 else()
-    target_link_libraries(${PROJECT_NAME}-host PRIVATE ${PROJECT_NAME}-game)
+  target_link_libraries(${PROJECT_NAME}-host PRIVATE ${PROJECT_NAME}-game)
 endif()
 
 if(EMSCRIPTEN)
-    set_target_properties(${PROJECT_NAME}-host PROPERTIES
+  set_target_properties(${PROJECT_NAME}-host PROPERTIES
         OUTPUT_NAME index
         SUFFIX ".html"
     )
 
-    target_link_options(${PROJECT_NAME}-host PRIVATE
+  target_link_options(${PROJECT_NAME}-host PRIVATE
         "-sALLOW_MEMORY_GROWTH=1"
         "-sASYNCIFY"
         "-sUSE_GLFW=3"
@@ -46,7 +44,7 @@ if(EMSCRIPTEN)
 endif()
 
 if(MINGW)
-    target_link_options(${PROJECT_NAME}-host PRIVATE
+  target_link_options(${PROJECT_NAME}-host PRIVATE
         -static -static-libgcc -static-libstdc++
     )
 endif()
