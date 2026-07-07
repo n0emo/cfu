@@ -17,20 +17,21 @@ auto InGameState::on_enter(entt::registry& registry) -> void {
     TraceLog(LOG_INFO, "InGameState::on_enter");
 
     auto bg = registry.create();
-    registry.emplace<components::BackgroundColor>(bg, SKYBLUE);
+    registry.emplace<comp::BackgroundColor>(bg, SKYBLUE);
+    registry.emplace<comp::InGameTag>(bg);
 
     auto player = registry.create();
-    components::create_player(registry, player);
-    registry.emplace<components::InGameTag>(player);
+    comp::create_player(registry, player);
+    registry.emplace<comp::InGameTag>(player);
 
     auto camera = registry.create();
     systems::create_camera(registry, camera);
-    registry.emplace<components::InGameTag>(camera);
+    registry.emplace<comp::InGameTag>(camera);
 }
 
 auto InGameState::on_exit(entt::registry& registry) -> void {
     TraceLog(LOG_INFO, "InGameState::on_exit");
-    auto view = registry.view<components::InGameTag>();
+    auto view = registry.view<comp::InGameTag>();
     registry.destroy(view.begin(), view.end());
 }
 

@@ -2,11 +2,11 @@
 
 #include <array>
 
-namespace MM {
+namespace cfu::comp {
 
 template<>
-void ComponentEditorWidget<cfu::components::BackgroundColor>(entt::registry& reg, entt::registry::entity_type e) {
-    auto& c = reg.get<cfu::components::BackgroundColor>(e);
+void ComponentEditorWidget<BackgroundColor>(entt::registry& reg, entt::registry::entity_type e) {
+    auto& c = reg.get<BackgroundColor>(e);
     auto colors = std::array<float, 4> {
         float(c.color.r) / 255.0f,
         float(c.color.g) / 255.0f,
@@ -20,4 +20,4 @@ void ComponentEditorWidget<cfu::components::BackgroundColor>(entt::registry& reg
     c.color.a = static_cast<unsigned char>(colors[3] * 255.0f);
 }
 
-} // namespace MM
+} // namespace cfu::comp

@@ -2,17 +2,17 @@
 
 #include "../raymath.hpp"
 #include "../physics/components.hpp"
+#include "../combat/components.hpp"
 #include "../constants.hpp"
 #include "./components.hpp"
 
 namespace cfu::systems {
 
 auto update_player(entt::registry& registry) -> void {
-    constexpr auto player_speed = 100.0f;
     const auto dt = GetFrameTime();
 
-    auto view = registry.view<cfu::components::Transform, components::Player>();
-    for (auto [entity, transform] : view.each()) {
+    auto view = registry.view<cfu::comp::Transform, const comp::MoveSpeed, const comp::Player>();
+    for (auto [entity, transform, move_speed] : view.each()) {
         auto input2d = Vector2();
         if (IsKeyDown(KEY_A)) input2d.x -= 1.0f;
         if (IsKeyDown(KEY_D)) input2d.x += 1.0f;
@@ -26,9 +26,8 @@ auto update_player(entt::registry& registry) -> void {
         input2d = Vector2Normalize(Vector2Rotate(input2d, angle));
         transform.rotation.y = Vector2Angle(Vector2(0.0f, 1.0f), input2d);
         auto input3d = Vector3(input2d.x, 0.0f, input2d.y);
-        // Vector3Angle(input3d, CAMERA_OFFSET);
 
-        transform.translation += input3d * player_speed * dt;
+        transform.translation += input3d * move_speed.value * dt;
     }
 }
 

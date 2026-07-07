@@ -1,7 +1,7 @@
 #pragma once
 
-namespace cfu::components {
+namespace cfu::comp {
 
 struct InGameTag {};
 
-} // namespace cfu::components
+} // namespace cfu::comp

@@ -9,8 +9,7 @@
 namespace cfu::systems {
 
 auto draw_solids(entt::registry& registry) -> void {
-    auto view =
-        registry.view<const cfu::components::Transform, const components::Cube, const components::SolidMaterial>();
+    auto view = registry.view<const cfu::comp::Transform, const comp::Cube, const comp::SolidMaterial>();
 
     for (const auto [entity, transform, cube, material] : view.each()) {
         rlPushMatrix();

@@ -2,11 +2,11 @@
 
 #include "../raymath.hpp"
 
-namespace MM {
+namespace cfu::comp {
 
 template<>
-void ComponentEditorWidget<cfu::components::Transform>(entt::registry& reg, entt::registry::entity_type e) {
-    auto& transform = reg.get<cfu::components::Transform>(e);
+void ComponentEditorWidget<Transform>(entt::registry& reg, entt::registry::entity_type e) {
+    auto& transform = reg.get<Transform>(e);
     ImGui::SeparatorText("Translation");
     ImGui::DragFloat("X##Translation", &transform.translation.x, 0.1f);
     ImGui::DragFloat("Y##Translation", &transform.translation.y, 0.1f);
@@ -30,4 +30,4 @@ void ComponentEditorWidget<cfu::components::Transform>(entt::registry& reg, entt
     ImGui::DragFloat("Z##Scale", &transform.scale.z, 0.01f);
 }
 
-} // namespace MM
+} // namespace cfu::comp

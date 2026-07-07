@@ -1,18 +1,18 @@
 #pragma once
 
 #include <entt/entt.hpp>
-#include <imgui_entt_entity_editor.hpp>
+#include <entt_editor.hpp>
 
-namespace cfu::components {
+namespace cfu::comp {
 
 struct DevSettings {
     bool show_dev_panel = true;
 };
 
-using Editor = MM::EntityEditor<entt::entity>;
+using Editor = EntityEditor<entt::entity>;
 
 struct CurrentEntity {
     entt::entity entity;
 };
 
-} // namespace cfu::components
+} // namespace cfu::comp

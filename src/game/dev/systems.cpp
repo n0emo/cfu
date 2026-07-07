@@ -1,11 +1,12 @@
 #include "./systems.hpp"
 
-#include <imgui_entt_entity_editor.hpp>
+#include <entt_editor.hpp>
 #include <ranges>
 #include <imgui.h>
 #include <raylib.h>
 
 #include "../background/components.hpp"
+#include "../combat/components.hpp"
 #include "../physics/components.hpp"
 #include "../player/components.hpp"
 #include "../shapes/components.hpp"
@@ -16,19 +17,19 @@
 namespace cfu::systems {
 
 auto setup_dev(entt::registry& registry) -> void {
-    registry.ctx().insert_or_assign(components::DevSettings {});
+    registry.ctx().insert_or_assign(comp::DevSettings {});
     setup_entt_editor(registry);
 }
 
 auto draw_dev(entt::registry& registry) -> void {
-    auto& settings = registry.ctx().get<components::DevSettings>();
+    auto& settings = registry.ctx().get<comp::DevSettings>();
     if (!settings.show_dev_panel) return;
     draw_dev_panel(registry);
     draw_entt_editor(registry);
 }
 
 auto update_dev(entt::registry& registry) -> void {
-    auto& settings = registry.ctx().get<components::DevSettings>();
+    auto& settings = registry.ctx().get<comp::DevSettings>();
     if (IsKeyPressed(KEY_F3)) settings.show_dev_panel = !settings.show_dev_panel;
 }
 
@@ -47,8 +48,8 @@ static auto state_menu() -> StateMenuResult {
 }
 
 auto draw_dev_panel(entt::registry& registry) -> void {
-    // auto& settings = registry.ctx().get<components::DevSettings>();
-    auto& editor = registry.ctx().get<components::Editor>();
+    // auto& settings = registry.ctx().get<comp::DevSettings>();
+    auto& editor = registry.ctx().get<comp::Editor>();
     auto& stack = StateStack::get(registry);
 
     auto io = ImGui::GetIO();
@@ -102,24 +103,27 @@ auto draw_dev_panel(entt::registry& registry) -> void {
 }
 
 auto setup_entt_editor(entt::registry& registry) -> void {
-    auto editor = components::Editor {};
+    auto editor = comp::Editor {};
     editor.show_window = false;
-    editor.registerComponent<components::BackgroundColor>("background::Color");
-    editor.registerComponent<components::Ball>("shapes::Ball");
-    editor.registerComponent<components::Cube>("solids::Cube");
-    editor.registerComponent<components::Player>("player::Player");
-    editor.registerComponent<components::Transform>("physics::Transform");
-    editor.registerComponent<components::ShapeColor>("shapes::Color");
-    editor.registerComponent<components::SolidMaterial>("solids::Material");
+    editor.registerComponent<comp::BackgroundColor>("background::Color");
+    editor.registerComponent<comp::Ball>("shapes::Ball");
+    editor.registerComponent<comp::Cube>("solids::Cube");
+    editor.registerComponent<comp::Player>("player::Player");
+    editor.registerComponent<comp::Transform>("physics::Transform");
+    editor.registerComponent<comp::ShapeColor>("shapes::Color");
+    editor.registerComponent<comp::SolidMaterial>("solids::Material");
+    editor.registerComponent<comp::Hp>("combat::Hp");
+    editor.registerComponent<comp::MoveSpeed>("combat::MoveSpeed");
+    editor.registerComponent<comp::MeleeAttack>("combat::MeleeAttack");
     registry.ctx().insert_or_assign(editor);
 
-    auto entity = components::CurrentEntity {.entity = entt::null};
+    auto entity = comp::CurrentEntity {.entity = entt::null};
     registry.ctx().insert_or_assign(entity);
 }
 
 auto draw_entt_editor(entt::registry& registry) -> void {
-    auto& entity = registry.ctx().get<components::CurrentEntity&>().entity;
-    auto& editor = registry.ctx().get<components::Editor>();
+    auto& entity = registry.ctx().get<comp::CurrentEntity&>().entity;
+    auto& editor = registry.ctx().get<comp::Editor>();
     editor.renderSimpleCombo(registry, entity);
 }
 

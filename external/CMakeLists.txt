@@ -6,7 +6,6 @@ set(RAYLIB_VERSION 6.0)
 set(IMGUI_VERSION 1.92.8)
 set(RLIMGUI_VERSION Raylib_6_0)
 set(ENTT_VERSION 3.15.0)
-set(ENTT_EDITOR_VERSION entt_v3.12.2)
 set(BOX2D_VERSION 3.1.1)
 
 set(FETCHCONTENT_QUIET ON)
@@ -62,12 +61,6 @@ FetchContent_Declare(
     URL "https://github.com/skypjack/entt/archive/refs/tags/v${ENTT_VERSION}.zip"
 )
 
-# ImGui EnTT Editor
-FetchContent_Declare(
-    entt-editor
-    URL "https://github.com/Green-Sky/imgui_entt_entity_editor/archive/refs/tags/${ENTT_EDITOR_VERSION}.zip"
-)
-
 # Box2D
 FetchContent_Declare(
     box2d
@@ -80,7 +73,6 @@ fetch(raylib)
 fetch(imgui)
 fetch(rlimgui)
 fetch(entt)
-fetch(entt-editor)
 fetch(box2d)
 
 include(./imgui.cmake)

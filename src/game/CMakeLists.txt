@@ -10,6 +10,7 @@ target_sources(${PROJECT_NAME}-game PRIVATE
     ./background/components.cpp
     ./background/systems.cpp
     ./camera/systems.cpp
+    ./combat/components.cpp
     ./dev/systems.cpp
     ./game.cpp
     ./in_game/state.cpp

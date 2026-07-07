@@ -1,10 +1,10 @@
 #include "./components.hpp"
 
-namespace MM {
+namespace cfu::comp {
 
 template<>
-void ComponentEditorWidget<cfu::components::ShapeColor>(entt::registry& reg, entt::registry::entity_type e) {
-    auto& c = reg.get<cfu::components::ShapeColor>(e);
+void ComponentEditorWidget<ShapeColor>(entt::registry& reg, entt::registry::entity_type e) {
+    auto& c = reg.get<ShapeColor>(e);
     auto colors = std::array<float, 4> {
         float(c.color.r) / 255.0f,
         float(c.color.g) / 255.0f,
@@ -19,9 +19,9 @@ void ComponentEditorWidget<cfu::components::ShapeColor>(entt::registry& reg, ent
 }
 
 template<>
-void ComponentEditorWidget<cfu::components::Ball>(entt::registry& reg, entt::registry::entity_type e) {
-    auto& ball = reg.get<cfu::components::Ball>(e);
+void ComponentEditorWidget<Ball>(entt::registry& reg, entt::registry::entity_type e) {
+    auto& ball = reg.get<Ball>(e);
     ImGui::DragFloat("Radius", &ball.radius);
 }
 
-} // namespace MM
+} // namespace cfu::comp

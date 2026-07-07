@@ -12,13 +12,13 @@ namespace cfu {
 auto MainMenuState::on_enter(entt::registry& registry) -> void {
     TraceLog(LOG_INFO, "MainMenuState::on_enter");
     auto bg = registry.create();
-    registry.emplace<components::BackgroundColor>(bg, GetColor(0xA4A4DAFF));
-    registry.emplace<components::MainMenuTag>(bg);
+    registry.emplace<comp::BackgroundColor>(bg, GetColor(0xA4A4DAFF));
+    registry.emplace<comp::MainMenuTag>(bg);
 }
 
 auto MainMenuState::on_exit(entt::registry& registry) -> void {
     TraceLog(LOG_INFO, "MainMenuState::on_exit");
-    auto view = registry.view<components::MainMenuTag>();
+    auto view = registry.view<comp::MainMenuTag>();
     registry.destroy(view.begin(), view.end());
 }
 

@@ -2,26 +2,22 @@
 
 #include <raylib.h>
 #include <entt/entt.hpp>
-#include <imgui_entt_entity_editor.hpp>
+#include <entt_editor.hpp>
 
-namespace cfu::components {
+namespace cfu::comp {
 
 struct SolidMaterial {
     Color color;
 };
 
+template<>
+void ComponentEditorWidget<SolidMaterial>(entt::registry& reg, entt::registry::entity_type e);
+
 struct Cube {
     Vector3 size;
 };
 
-} // namespace cfu::components
-
-namespace MM {
-
 template<>
-void ComponentEditorWidget<cfu::components::SolidMaterial>(entt::registry& reg, entt::registry::entity_type e);
+void ComponentEditorWidget<cfu::comp::Cube>(entt::registry& reg, entt::registry::entity_type e);
 
-template<>
-void ComponentEditorWidget<cfu::components::Cube>(entt::registry& reg, entt::registry::entity_type e);
-
-} // namespace MM
+} // namespace cfu::comp

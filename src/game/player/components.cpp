@@ -2,21 +2,37 @@
 
 #include "../physics/components.hpp"
 #include "../solids/components.hpp"
+#include "../combat/components.hpp"
+#include "../constants.hpp"
 
-namespace cfu::components {
+namespace cfu::comp {
 
 auto create_player(entt::registry& registry, entt::entity entity) -> void {
+    const auto desc = PLAYER_STATS_DESCS[0];
+
     registry.emplace<Player>(entity);
-    registry.emplace<cfu::components::Transform>(
+    registry.emplace<cfu::comp::Transform>(
         entity,
-        cfu::components::Transform {
+        cfu::comp::Transform {
             .translation = Vector3(0.0f, 10.0f, 0.0f),
             .rotation = Vector3(),
             .scale = Vector3(1.0f, 1.0f, 1.0f),
         }
     );
+
+    registry.emplace<Hp>(entity, desc.max_hp, desc.max_hp);
+    registry.emplace<MoveSpeed>(entity, desc.move_speed);
+    registry.emplace<MeleeAttack>(
+        entity,
+        MeleeAttack {
+            .damage = desc.damage,
+            .attack_speed = desc.attack_speed,
+            .attack_radius = desc.attack_radius,
+        }
+    );
+
     registry.emplace<Cube>(entity, 20.0f, 20.0f, 20.0f);
     registry.emplace<SolidMaterial>(entity, RED);
 }
 
-} // namespace cfu::components
+} // namespace cfu::comp

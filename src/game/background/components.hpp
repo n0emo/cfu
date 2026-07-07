@@ -2,19 +2,15 @@
 
 #include <raylib.h>
 #include <entt/entt.hpp>
-#include <imgui_entt_entity_editor.hpp>
+#include <entt_editor.hpp>
 
-namespace cfu::components {
+namespace cfu::comp {
 
 struct BackgroundColor {
     Color color;
 };
 
-} // namespace cfu::components
-
-namespace MM {
-
 template<>
-void ComponentEditorWidget<cfu::components::BackgroundColor>(entt::registry& reg, entt::registry::entity_type e);
+void ComponentEditorWidget<BackgroundColor>(entt::registry& reg, entt::registry::entity_type e);
 
-} // namespace MM
+} // namespace cfu::comp
