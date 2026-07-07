@@ -2,7 +2,7 @@
 #include <variant>
 #include <span>
 
-#include <entt/entt.hpp>
+#include <entt/entity/registry.hpp>
 #include <gsl/gsl>
 
 #include "main_menu/state.hpp"

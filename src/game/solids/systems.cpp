@@ -1,7 +1,8 @@
 #include "./systems.hpp"
 
-#include "../raymath.hpp"
+#include "../constants.hpp"
 #include "../physics/components.hpp"
+#include "../raymath.hpp"
 #include "./components.hpp"
 
 #include <rlgl.h>
@@ -11,7 +12,15 @@ namespace cfu::systems {
 auto draw_solids(entt::registry& registry) -> void {
     auto view = registry.view<const cfu::comp::Transform, const comp::Cube, const comp::SolidMaterial>();
 
+    auto camera_entity = registry.view<Camera3D>().back();
+    if (camera_entity == entt::null) return;
+    const auto camera_position_3d = registry.get<Camera3D>(camera_entity).position - CAMERA_OFFSET;
+    const auto camera_position = Vector2(camera_position_3d.x, camera_position_3d.z);
+
     for (const auto [entity, transform, cube, material] : view.each()) {
+        const auto position_2d = Vector2(transform.translation.x, transform.translation.z);
+        if (Vector2DistanceSqr(camera_position, position_2d) > BOX_CULLING_RADIUS) continue;
+
         rlPushMatrix();
         const auto position = transform.translation;
         rlTranslatef(position.x, position.y, position.z);

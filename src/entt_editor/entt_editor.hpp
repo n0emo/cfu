@@ -7,7 +7,9 @@
 #include <functional>
 #include <string>
 
-#include <entt/entt.hpp>
+#include <entt/entity/registry.hpp>
+#include <entt/entity/runtime_view.hpp>
+#include <entt/entity/sparse_set.hpp>
 #include <imgui.h>
 
 #ifndef MM_IEEE_ASSERT

@@ -8,6 +8,7 @@
 #include "./constants.hpp"
 #include "./dev/systems.hpp"
 #include "./physics/systems.hpp"
+#include "./render_texture/systems.hpp"
 #include "./states.hpp"
 
 namespace cfu {
@@ -18,6 +19,8 @@ auto Game::init(Game& self) -> void {
     SetTargetFPS(60);
     InitAudioDevice();
     rlImGuiSetup(true);
+
+    systems::setup_main_render_texture(self.registry);
 
     StateStack::setup(self.registry);
     StateStack::get(self.registry).push(MainMenuState());
@@ -30,6 +33,7 @@ auto Game::deinit(Game& self) -> void {
     StateStack::get(self.registry).clear(self.registry);
     self.registry.clear();
 
+    systems::destroy_main_render_texture(self.registry);
     rlImGuiEnd();
     CloseAudioDevice();
     CloseWindow();
@@ -42,10 +46,12 @@ auto Game::frame(this Game& self) -> void {
     systems::update_dev(self.registry);
 
     BeginDrawing();
-    ClearBackground(RED);
+    ClearBackground(GetColor(0x181818ff));
 
-    rlImGuiBegin();
+    systems::begin_main_render_texture(self.registry);
     StateStack::get(self.registry).draw(self.registry);
+    systems::end_main_render_texture(self.registry);
+    rlImGuiBegin();
     systems::draw_dev(self.registry);
     rlImGuiEnd();
 

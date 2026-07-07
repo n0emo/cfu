@@ -12,6 +12,7 @@ target_sources(${PROJECT_NAME}-game PRIVATE
     ./camera/systems.cpp
     ./combat/components.cpp
     ./dev/systems.cpp
+    ./dev/utils.cpp
     ./game.cpp
     ./in_game/state.cpp
     ./main_menu/state.cpp
@@ -19,11 +20,14 @@ target_sources(${PROJECT_NAME}-game PRIVATE
     ./physics/systems.cpp
     ./player/components.cpp
     ./player/systems.cpp
+    ./render_texture/systems.cpp
     ./shapes/components.cpp
     ./shapes/systems.cpp
     ./solids/components.cpp
     ./solids/systems.cpp
     ./states.cpp
+    ./tilemap/components.cpp
+    ./tilemap/systems.cpp
 )
 
 target_include_directories(${PROJECT_NAME}-game PUBLIC .)

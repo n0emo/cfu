@@ -2,6 +2,8 @@
 
 #include <raylib.h>
 
+#include "../tilemap/systems.hpp"
+#include "../tilemap/components.hpp"
 #include "../background/components.hpp"
 #include "../background/systems.hpp"
 #include "../camera/systems.hpp"
@@ -27,6 +29,18 @@ auto InGameState::on_enter(entt::registry& registry) -> void {
     auto camera = registry.create();
     systems::create_camera(registry, camera);
     registry.emplace<comp::InGameTag>(camera);
+
+    auto tilemap = registry.create();
+    comp::create_map(registry, tilemap, 128, 128);
+    registry.emplace<comp::InGameTag>(tilemap);
+
+    for (auto i = 0; i < 128; i++) {
+        for (auto j = 0; j < 128; j++) {
+            auto tile = registry.create();
+            comp::create_tile(registry, tile, comp::TileKind::Floor, i, 0, j);
+            registry.emplace<comp::InGameTag>(tile);
+        }
+    }
 }
 
 auto InGameState::on_exit(entt::registry& registry) -> void {
@@ -37,13 +51,13 @@ auto InGameState::on_exit(entt::registry& registry) -> void {
 
 auto InGameState::update(entt::registry& registry) -> void {
     systems::update_player(registry);
+    systems::update_tilemap(registry);
 }
 
 auto InGameState::draw(entt::registry& registry) -> void {
     systems::draw_background_color(registry);
     systems::update_camera(registry);
     systems::begin_camera_mode(registry);
-    DrawGrid(200, 10.0f);
     systems::draw_solids(registry);
 
     systems::draw_shapes(registry);

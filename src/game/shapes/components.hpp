@@ -1,6 +1,6 @@
 #pragma once
 
-#include <entt/entt.hpp>
+#include <entt/entity/registry.hpp>
 #include <entt_editor.hpp>
 #include <raylib.h>
 

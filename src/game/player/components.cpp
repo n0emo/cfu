@@ -3,6 +3,7 @@
 #include "../physics/components.hpp"
 #include "../solids/components.hpp"
 #include "../combat/components.hpp"
+#include "../tilemap/components.hpp"
 #include "../constants.hpp"
 
 namespace cfu::comp {
@@ -20,6 +21,8 @@ auto create_player(entt::registry& registry, entt::entity entity) -> void {
         }
     );
 
+    registry.emplace<Grounded>(entity, 0.0f);
+
     registry.emplace<Hp>(entity, desc.max_hp, desc.max_hp);
     registry.emplace<MoveSpeed>(entity, desc.move_speed);
     registry.emplace<MeleeAttack>(
@@ -31,7 +34,7 @@ auto create_player(entt::registry& registry, entt::entity entity) -> void {
         }
     );
 
-    registry.emplace<Cube>(entity, 20.0f, 20.0f, 20.0f);
+    registry.emplace<Cube>(entity, 32.0f, 64.0f, 32.0f);
     registry.emplace<SolidMaterial>(entity, RED);
 }
 

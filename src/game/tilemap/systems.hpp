@@ -4,6 +4,6 @@
 
 namespace cfu::systems {
 
-auto update_player(entt::registry& registry) -> void;
+auto update_tilemap(entt::registry& registry) -> void;
 
 }

@@ -1,7 +1,7 @@
 #pragma once
 
 #include <raylib.h>
-#include <entt/entt.hpp>
+#include <entt/entity/registry.hpp>
 #include <entt_editor.hpp>
 
 namespace cfu::comp {
