@@ -14,7 +14,7 @@
       "inherits": ["base"],
       "binaryDir": "${sourceDir}/build/dev",
       "cacheVariables": {
-        "GAME_HOT_RELOAD": "ON",
+        "GAME_DEV_MODE": "ON",
         "CMAKE_BUILD_TYPE": "Debug"
       }
     },
@@ -23,7 +23,7 @@
       "inherits": ["base"],
       "binaryDir": "${sourceDir}/build/release",
       "cacheVariables": {
-        "GAME_HOT_RELOAD": "OFF"
+        "GAME_DEV_MODE": "OFF"
       }
     },
     {

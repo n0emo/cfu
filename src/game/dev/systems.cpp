@@ -18,6 +18,7 @@
 #include "../solids/components.hpp"
 #include "../states.hpp"
 #include "../tilemap/components.hpp"
+#include "../vox/systems.hpp"
 #include "./components.hpp"
 #include "./utils.hpp"
 
@@ -32,12 +33,15 @@ auto setup_dev(entt::registry& registry) -> void {
 
 auto draw_dev(entt::registry& registry) -> void {
     auto& settings = registry.ctx().get<comp::DevSettings>();
+    if (!GAME_DEV_MODE) settings.show_dev_panel = false;
+
     if (settings.show_dev_panel) {
         SetWindowSize(WINDOW_DEV_WIDTH, WINDOW_DEV_HEIGHT);
     } else {
         SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         return;
     }
+    if (IsKeyPressed(KEY_F1)) systems::reload_voxel_models(registry);
 
     draw_dev_panel(registry);
     draw_entt_editor(registry);

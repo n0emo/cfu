@@ -1,4 +1,4 @@
-#if GAME_HOT_RELOAD
+#if GAME_DEV_MODE
 
 // From <raylib.h> - manual forward declarations needed because cr.h includes windows.h
 extern "C" {

@@ -6,11 +6,12 @@
 #include <rlImGui.h>
 
 #include "./constants.hpp"
+#include "./data/systems.hpp"
 #include "./dev/systems.hpp"
 #include "./physics/systems.hpp"
-#include "./data/systems.hpp"
 #include "./render_texture/systems.hpp"
 #include "./states.hpp"
+#include "./vox/systems.hpp"
 
 namespace cfu {
 
@@ -22,6 +23,8 @@ auto Game::init(Game& self) -> void {
     rlImGuiSetup(true);
 
     systems::load_game_data_from_disk(self.registry);
+    systems::setup_vox_model_cache(self.registry);
+    systems::reload_voxel_models(self.registry);
 
     systems::setup_main_render_texture(self.registry);
 

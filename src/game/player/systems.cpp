@@ -29,7 +29,7 @@ auto update_player(entt::registry& registry) -> void {
         const auto offset_normalized = Vector2Normalize(Vector2(camera_offset.x, camera_offset.y));
         const auto angle = Vector2Angle(Vector2(0.0f, 1.0f), offset_normalized);
         input2d = Vector2Normalize(Vector2Rotate(input2d, angle));
-        transform.rotation.y = Vector2Angle(Vector2(0.0f, 1.0f), input2d);
+        transform.rotation.y = Vector2Angle(Vector2(1.0f, 0.0f), Vector2(input2d.x, input2d.y * -1.0f));
         auto input3d = Vector3(input2d.x, 0.0f, input2d.y);
 
         transform.translation += input3d * move_speed.value * dt;

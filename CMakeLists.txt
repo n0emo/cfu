@@ -15,9 +15,9 @@ if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
     set(CMAKE_BUILD_TYPE Debug CACHE STRING "Build type" FORCE)
 endif()
 
-option(GAME_HOT_RELOAD "Build game with hot reload support" OFF)
+option(GAME_DEV_MODE "Build game with hot reload support" OFF)
 
-if(GAME_HOT_RELOAD)
+if(GAME_DEV_MODE)
     set(BUILD_SHARED_LIBS ON)
 endif()
 

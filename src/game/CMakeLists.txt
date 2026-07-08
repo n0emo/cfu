@@ -1,6 +1,6 @@
 include(../cmake/deps.cmake)
 
-if(GAME_HOT_RELOAD)
+if(GAME_DEV_MODE)
     add_library(${PROJECT_NAME}-game MODULE)
 else()
     add_library(${PROJECT_NAME}-game STATIC)
@@ -30,6 +30,8 @@ target_sources(${PROJECT_NAME}-game PRIVATE
     ./states.cpp
     ./tilemap/components.cpp
     ./tilemap/systems.cpp
+    ./vox/resource.cpp
+    ./vox/systems.cpp
 )
 
 target_include_directories(${PROJECT_NAME}-game PUBLIC .)
@@ -41,7 +43,7 @@ set_target_properties(${PROJECT_NAME}-game PROPERTIES
 )
 
 target_compile_definitions(${PROJECT_NAME}-game PRIVATE
-    -DGAME_HOT_RELOAD=$<BOOL:${GAME_HOT_RELOAD}>
+    -DGAME_DEV_MODE=$<BOOL:${GAME_DEV_MODE}>
 )
 
 if(MSVC)
@@ -52,7 +54,7 @@ endif()
 
 set_dependencies(${PROJECT_NAME}-game)
 
-if(GAME_HOT_RELOAD)
+if(GAME_DEV_MODE)
     set_target_properties(${PROJECT_NAME}-game PROPERTIES OUTPUT_NAME plugin)
     target_sources(${PROJECT_NAME}-game PRIVATE plugin.cpp)
 endif()

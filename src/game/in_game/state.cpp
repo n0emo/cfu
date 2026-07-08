@@ -2,8 +2,6 @@
 
 #include <raylib.h>
 
-#include "../tilemap/systems.hpp"
-#include "../tilemap/components.hpp"
 #include "../background/components.hpp"
 #include "../background/systems.hpp"
 #include "../camera/systems.hpp"
@@ -11,6 +9,9 @@
 #include "../player/systems.hpp"
 #include "../shapes/systems.hpp"
 #include "../solids/systems.hpp"
+#include "../tilemap/components.hpp"
+#include "../tilemap/systems.hpp"
+#include "../vox/systems.hpp"
 #include "./components.hpp"
 
 namespace cfu {
@@ -59,6 +60,7 @@ auto InGameState::draw(entt::registry& registry) -> void {
     systems::update_camera(registry);
     systems::begin_camera_mode(registry);
     systems::draw_solids(registry);
+    systems::draw_voxel_models(registry);
 
     systems::draw_shapes(registry);
     systems::end_camera_mode(registry);

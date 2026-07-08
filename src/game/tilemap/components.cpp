@@ -2,6 +2,8 @@
 
 #include <format>
 
+#include "../vox/resource.hpp"
+#include "../vox/components.hpp"
 #include "../physics/components.hpp"
 #include "../solids/components.hpp"
 #include "../constants.hpp"
@@ -101,18 +103,15 @@ auto create_tile(entt::registry& registry, entt::entity entity, TileKind kind, g
     -> void {
     registry.emplace<Tile>(entity, kind);
 
-    auto cube_size = Vector3 {};
-    auto cube_color = Color {};
+    auto model_id = res::vox::VoxelModelId {};
     auto height = float {};
     switch (kind) {
         case TileKind::Floor:
-            cube_size = Vector3(1.0f, 0.5f, 1.0f) * TILE_SIZE;
-            cube_color = MAROON;
+            model_id = res::vox::Floor;
             height = TILE_SIZE * 0.5f;
             break;
         case TileKind::Wall:
-            cube_size = Vector3One() * TILE_SIZE;
-            cube_color = DARKGRAY;
+            model_id = res::vox::Wall;
             height = TILE_SIZE;
             break;
     };
@@ -123,12 +122,12 @@ auto create_tile(entt::registry& registry, entt::entity entity, TileKind kind, g
             .translation =
                 Vector3(float(x) * TILE_SIZE, float(y) * TILE_SIZE + height - TILE_SIZE * 0.5f, float(z) * TILE_SIZE),
             .rotation = Vector3Zero(),
-            .scale = Vector3One(),
+            .scale = Vector3One() * 4.0f,
         }
     );
 
-    registry.emplace<Cube>(entity, cube_size);
-    registry.emplace<SolidMaterial>(entity, cube_color);
+    const auto model = registry.ctx().get<res::VoxelModelCache>()[model_id];
+    registry.emplace<VoxelModel>(entity, model);
 
     auto height_map_entity = registry.view<HeightMap>().back();
     if (height_map_entity != entt::null) {

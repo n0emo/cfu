@@ -11,7 +11,7 @@ function(set_dependencies target)
         nlohmann_json::nlohmann_json
     )
 
-    if(GAME_HOT_RELOAD)
+    if(GAME_DEV_MODE)
         target_link_libraries(${target} PRIVATE cr)
     endif()
 
