@@ -8,6 +8,8 @@
 #include "../background/components.hpp"
 #include "../combat/components.hpp"
 #include "../constants.hpp"
+#include "../data/components.hpp"
+#include "../data/systems.hpp"
 #include "../in_game/components.hpp"
 #include "../physics/components.hpp"
 #include "../player/components.hpp"
@@ -25,6 +27,7 @@ auto setup_dev(entt::registry& registry) -> void {
     registry.ctx().insert_or_assign(comp::DevSettings {});
     setup_entt_editor(registry);
     setup_tilemap_editor(registry);
+    setup_data_editor(registry);
 }
 
 auto draw_dev(entt::registry& registry) -> void {
@@ -35,9 +38,11 @@ auto draw_dev(entt::registry& registry) -> void {
         SetWindowSize(WINDOW_WIDTH, WINDOW_HEIGHT);
         return;
     }
+
     draw_dev_panel(registry);
     draw_entt_editor(registry);
     draw_tilemap_editor(registry);
+    draw_data_editor(registry);
 }
 
 auto update_dev(entt::registry& registry) -> void {
@@ -61,7 +66,9 @@ static auto state_menu() -> StateMenuResult {
 
 auto draw_dev_panel(entt::registry& registry) -> void {
     // auto& settings = registry.ctx().get<comp::DevSettings>();
-    auto& editor = registry.ctx().get<comp::Editor>();
+    auto& entt_editor = registry.ctx().get<comp::Editor>();
+    auto& tilemap_editor = registry.ctx().get<comp::TileMapEditor>();
+    auto& data_editor = registry.ctx().get<comp::DataEditor>();
     auto& stack = StateStack::get(registry);
 
     auto io = ImGui::GetIO();
@@ -104,7 +111,9 @@ auto draw_dev_panel(entt::registry& registry) -> void {
         }
 
         if (ImGui::BeginMenu("view")) {
-            ImGui::MenuItem("Entity editor", nullptr, &editor.show_window);
+            ImGui::MenuItem("Entity editor", nullptr, &entt_editor.show_window);
+            ImGui::MenuItem("Tilamap editor", nullptr, &tilemap_editor.show_window);
+            ImGui::MenuItem("Data editor", nullptr, &data_editor.show_window);
             ImGui::EndMenu();
         }
 
@@ -139,11 +148,6 @@ auto draw_entt_editor(entt::registry& registry) -> void {
     editor.renderSimpleCombo(registry, entity);
 }
 
-auto setup_tilemap_editor(entt::registry& registry) -> void {
-    auto editor = comp::TileMapEditor {};
-    registry.ctx().insert_or_assign(editor);
-}
-
 static auto get_cube_under_mouse(entt::registry& registry) -> std::tuple<entt::entity, Vector3> {
     auto view = registry.view<const comp::Tile, const comp::Transform, const comp::Cube>();
     for (auto [entity, tile, transform, cube] : view.each()) {
@@ -163,8 +167,14 @@ static auto get_cube_under_mouse(entt::registry& registry) -> std::tuple<entt::e
     return {entt::null, Vector3()};
 }
 
+auto setup_tilemap_editor(entt::registry& registry) -> void {
+    auto editor = comp::TileMapEditor {};
+    registry.ctx().insert_or_assign(editor);
+}
+
 auto draw_tilemap_editor(entt::registry& registry) -> void {
     auto& editor = registry.ctx().get<comp::TileMapEditor>();
+    if (!editor.show_window) return;
 
     auto tilemap_entity = registry.view<comp::TileMap>().back();
     if (tilemap_entity == entt::null) {
@@ -252,6 +262,127 @@ auto draw_tilemap_editor(entt::registry& registry) -> void {
             break;
         }
     }
+}
+
+auto setup_data_editor(entt::registry& registry) -> void {
+    registry.ctx().insert_or_assign(comp::DataEditor {});
+}
+
+auto draw_data_editor(entt::registry& registry) -> void {
+    auto& d = registry.ctx().get<comp::GameData>();
+    auto& editor = registry.ctx().get<comp::DataEditor>();
+    if (!editor.show_window) return;
+
+    ImGui::Begin("Data Editor");
+
+    if (ImGui::Button("Apply") || editor.update_realtime) systems::apply_game_data_to_game(registry);
+    ImGui::SameLine();
+    if (ImGui::Button("Save")) systems::save_game_data_to_disk(registry);
+    ImGui::SameLine();
+    if (ImGui::Button("Reset")) ImGui::OpenPopup("Confirm Reset?");
+    ImGui::SameLine();
+    ImGui::Checkbox("Realtime", &editor.update_realtime);
+
+    ImGui::Separator();
+
+    if (ImGui::CollapsingHeader("Camera settings")) {
+        ImGui::PushID("Camera settings");
+        ImGui::Indent(10.f);
+
+        auto& c = d.balance.camera;
+        ImGui::DragFloat("Box culling", &c.box_culling, 100.0f);
+        ImGui::DragFloat("Lerp factor", &c.lerp, 0.002f);
+        ImGui::DragFloat("fovy", &c.fovy, 1.0f);
+
+        ImGui::SeparatorText("Offset");
+        ImGui::DragFloat("X##offset", &c.offset.x, 1.0f);
+        ImGui::DragFloat("Y##offset", &c.offset.y, 1.0f);
+        ImGui::DragFloat("Z##offset", &c.offset.z, 1.0f);
+
+        ImGui::SeparatorText("Up");
+        ImGui::DragFloat("X##up", &c.up.x, 1.0f);
+        ImGui::DragFloat("Y##up", &c.up.y, 1.0f);
+        ImGui::DragFloat("Z##up", &c.up.z, 1.0f);
+
+        ImGui::Unindent();
+        ImGui::PopID();
+    }
+
+    if (ImGui::CollapsingHeader("Player stats")) {
+        ImGui::PushID("Player stats");
+        ImGui::Indent(10.0f);
+
+        auto& p = d.balance.player;
+
+        if (ImGui::CollapsingHeader("Evo 1")) {
+            ImGui::PushID("Evo 1");
+            ImGui::Indent(10.0f);
+
+            auto& e = p.evo_1;
+            ImGui::DragInt("Max HP", &e.max_hp);
+            ImGui::DragInt("Move Speed", &e.move_speed);
+            ImGui::DragInt("Damage", &e.damage);
+            ImGui::DragInt("Attack Speed", &e.attack_speed);
+            ImGui::DragInt("Attack Radius", &e.attack_radius);
+
+            ImGui::Unindent(10.0f);
+            ImGui::PopID();
+        }
+
+        if (ImGui::CollapsingHeader("Evo 2")) {
+            ImGui::PushID("Evo 2");
+            ImGui::Indent(10.0f);
+
+            auto& e = p.evo_2;
+            ImGui::DragInt("Max HP", &e.max_hp);
+            ImGui::DragInt("Move Speed", &e.move_speed);
+            ImGui::DragInt("Damage", &e.damage);
+            ImGui::DragInt("Attack Speed", &e.attack_speed);
+            ImGui::DragInt("Attack Radius", &e.attack_radius);
+
+            ImGui::Unindent(10.0f);
+            ImGui::PopID();
+        }
+
+        if (ImGui::CollapsingHeader("Evo 3")) {
+            ImGui::PushID("Evo 3");
+            ImGui::Indent(10.0f);
+
+            auto& e = p.evo_3;
+            ImGui::DragInt("Max HP", &e.max_hp);
+            ImGui::DragInt("Move Speed", &e.move_speed);
+            ImGui::DragInt("Damage", &e.damage);
+            ImGui::DragInt("Attack Speed", &e.attack_speed);
+            ImGui::DragInt("Attack Radius", &e.attack_radius);
+
+            ImGui::Unindent(10.0f);
+            ImGui::PopID();
+        }
+
+        ImGui::Unindent(10.0f);
+        ImGui::PopID();
+    }
+
+    if (ImGui::BeginPopupModal("Confirm Reset?", nullptr, ImGuiWindowFlags_AlwaysAutoResize)) {
+        ImGui::Text("Are you sure you want to reset game data?");
+        ImGui::Separator();
+
+        if (ImGui::Button("OK", ImVec2(120, 0))) {
+            systems::load_game_data_from_disk(registry);
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::SetItemDefaultFocus();
+        ImGui::SameLine();
+
+        if (ImGui::Button("Cancel", ImVec2(120, 0))) {
+            ImGui::CloseCurrentPopup();
+        }
+
+        ImGui::EndPopup();
+    }
+
+    ImGui::End();
 }
 
 } // namespace cfu::systems

@@ -16,4 +16,7 @@ auto draw_entt_editor(entt::registry& registry) -> void;
 auto setup_tilemap_editor(entt::registry& registry) -> void;
 auto draw_tilemap_editor(entt::registry& registry) -> void;
 
+auto setup_data_editor(entt::registry& registry) -> void;
+auto draw_data_editor(entt::registry& registry) -> void;
+
 } // namespace cfu::systems

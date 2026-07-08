@@ -1,0 +1,36 @@
+{
+  "camera": {
+    "box_culling": 40000.0,
+    "fovy": 200.0,
+    "lerp": 15.0,
+    "offset_x": 100.0,
+    "offset_y": 100.0,
+    "offset_z": 100.0,
+    "up_x": 0.0,
+    "up_y": 1.0,
+    "up_z": 0.0
+  },
+  "player": {
+    "evo_1": {
+      "attack_radius": 29,
+      "attack_speed": 45,
+      "damage": 8,
+      "max_hp": 105,
+      "move_speed": 200
+    },
+    "evo_2": {
+      "attack_radius": 32,
+      "attack_speed": 26,
+      "damage": 59,
+      "max_hp": 101,
+      "move_speed": 58
+    },
+    "evo_3": {
+      "attack_radius": 56,
+      "attack_speed": 51,
+      "damage": 58,
+      "max_hp": 120,
+      "move_speed": 33
+    }
+  }
+}

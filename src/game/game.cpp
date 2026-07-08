@@ -8,6 +8,7 @@
 #include "./constants.hpp"
 #include "./dev/systems.hpp"
 #include "./physics/systems.hpp"
+#include "./data/systems.hpp"
 #include "./render_texture/systems.hpp"
 #include "./states.hpp"
 
@@ -19,6 +20,8 @@ auto Game::init(Game& self) -> void {
     SetTargetFPS(60);
     InitAudioDevice();
     rlImGuiSetup(true);
+
+    systems::load_game_data_from_disk(self.registry);
 
     systems::setup_main_render_texture(self.registry);
 

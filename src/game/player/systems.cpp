@@ -3,7 +3,7 @@
 #include "../raymath.hpp"
 #include "../physics/components.hpp"
 #include "../combat/components.hpp"
-#include "../constants.hpp"
+#include "../camera/components.hpp"
 #include "../tilemap/components.hpp"
 #include "./components.hpp"
 
@@ -11,6 +11,10 @@ namespace cfu::systems {
 
 auto update_player(entt::registry& registry) -> void {
     const auto dt = GetFrameTime();
+
+    auto camera_entity = registry.view<Camera3D, comp::CameraOffset>().back();
+    if (camera_entity == entt::null) return;
+    const auto camera_offset = registry.get<comp::CameraOffset>(camera_entity).offset;
 
     auto view = registry.view<comp::Transform, comp::Grounded, const comp::MoveSpeed, const comp::Player>();
     for (auto [entity, transform, grounded, move_speed] : view.each()) {
@@ -22,7 +26,7 @@ auto update_player(entt::registry& registry) -> void {
 
         if (Vector2LengthSqr(input2d) == 0) continue;
 
-        const auto offset_normalized = Vector2Normalize(Vector2(CAMERA_OFFSET.x, CAMERA_OFFSET.y));
+        const auto offset_normalized = Vector2Normalize(Vector2(camera_offset.x, camera_offset.y));
         const auto angle = Vector2Angle(Vector2(0.0f, 1.0f), offset_normalized);
         input2d = Vector2Normalize(Vector2Rotate(input2d, angle));
         transform.rotation.y = Vector2Angle(Vector2(0.0f, 1.0f), input2d);

@@ -17,3 +17,4 @@ Diagnostics:
       - "cppcoreguidelines-pro-type-vararg"
       - "modernize-use-std-print"
       - "bugprone-easily-swappable-parameters"
+      - "cppcoreguidelines-macro-usage"

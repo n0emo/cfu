@@ -7,6 +7,7 @@ set(IMGUI_VERSION 1.92.8)
 set(RLIMGUI_VERSION Raylib_6_0)
 set(ENTT_VERSION 3.15.0)
 set(BOX2D_VERSION 3.1.1)
+set(JSON_VERSION 3.12.0)
 
 set(FETCHCONTENT_QUIET ON)
 
@@ -67,6 +68,12 @@ FetchContent_Declare(
     URL "https://github.com/erincatto/box2d/archive/refs/tags/v${BOX2D_VERSION}.zip"
 )
 
+# JSON
+FetchContent_Declare(
+    json
+    URL "https://github.com/nlohmann/json/releases/download/v${JSON_VERSION}/json.tar.xz"
+)
+
 fetch(cr)
 fetch(gsl)
 fetch(raylib)
@@ -74,6 +81,7 @@ fetch(imgui)
 fetch(rlimgui)
 fetch(entt)
 fetch(box2d)
+fetch(json)
 
 include(./imgui.cmake)
 include(./rlimgui.cmake)

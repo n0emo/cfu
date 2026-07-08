@@ -25,10 +25,15 @@ enum class TileMapEditorMode {
 };
 
 struct TileMapEditor {
-    bool show = false;
+    bool show_window = false;
     bool enabled = false;
     TileMapEditorMode mode = TileMapEditorMode::Free;
     TileKind current_tile = TileKind::Wall;
+};
+
+struct DataEditor {
+    bool show_window = false;
+    bool update_realtime = true;
 };
 
 } // namespace cfu::comp

@@ -8,14 +8,37 @@
 
 namespace cfu::comp {
 
+#define TILE_KIND_LIST                                                                                                 \
+    CFU_X(Floor, "floor")                                                                                              \
+    CFU_X(Wall, "wall")
+
 enum class TileKind {
-    Floor,
-    Wall,
-    // Staircase,
+    #define CFU_X(name, ...) name,
+    TILE_KIND_LIST
+    #undef CFU_X
 };
+
+auto tile_kind_to_string(TileKind kind) -> gsl::czstring;
+auto tile_kind_from_string(std::string_view string) -> TileKind;
+
+#define TILE_ROTATION_LIST                                                                                             \
+    CFU_X(None, "none")                                                                                                \
+    CFU_X(Deg90, "90")                                                                                                 \
+    CFU_X(Deg180, "180")                                                                                               \
+    CFU_X(Deg270, "270")
+
+enum class TileRotation {
+    #define CFU_X(name, ...) name,
+    TILE_ROTATION_LIST
+    #undef CFU_X
+};
+
+auto tile_rotation_to_string(TileRotation rot) -> gsl::czstring;
+auto tile_rotation_from_string(std::string_view str) -> TileRotation;
 
 struct Tile {
     TileKind kind;
+    TileRotation rotation;
 };
 
 struct TileMap {

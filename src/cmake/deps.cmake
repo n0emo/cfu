@@ -8,6 +8,7 @@ function(set_dependencies target)
         EnTT
         imgui_entt_entity_editor
         box2d
+        nlohmann_json::nlohmann_json
     )
 
     if(GAME_HOT_RELOAD)

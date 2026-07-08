@@ -1,11 +1,55 @@
 #include "./components.hpp"
 
+#include <format>
+
 #include "../physics/components.hpp"
 #include "../solids/components.hpp"
 #include "../constants.hpp"
 #include "../raymath.hpp"
 
 namespace cfu::comp {
+
+auto tile_kind_to_string(TileKind kind) -> gsl::czstring {
+    switch (kind) {
+    #define CFU_X(name, str)                                                                                           \
+    case TileKind::name: {                                                                                             \
+        return str;                                                                                                    \
+    }
+        TILE_KIND_LIST
+    #undef CFU_X
+        default:
+            throw std::range_error(std::format("Invalid TileKind: {}", int(kind)));
+    }
+}
+
+auto tile_kind_from_string(std::string_view string) -> TileKind {
+    #define CFU_X(name, str)                                                                                           \
+    if ((str) == string) return TileKind::name;                                                                        \
+    TILE_KIND_LIST
+    #undef CFU_X
+    throw std::range_error(std::format("Invalid TileKind: '{}'", string));
+}
+
+auto tile_rotation_to_string(TileRotation rot) -> gsl::czstring {
+    switch (rot) {
+    #define CFU_X(name, str)                                                                                           \
+    case TileRotation::name: {                                                                                         \
+        return str;                                                                                                    \
+    }
+        TILE_ROTATION_LIST
+    #undef CFU_X
+        default:
+            throw std::range_error(std::format("Invalid TileRotation: {}", int(rot)));
+    }
+}
+
+auto tile_rotation_from_string(std::string_view string) -> TileRotation {
+    #define CFU_X(name, str)                                                                                           \
+    if ((str) == string) return TileRotation::name;
+    TILE_ROTATION_LIST
+    #undef CFU_X
+    throw std::range_error(std::format("Invalid TileRotation: '{}'", string));
+}
 
 auto HeightMap::create(std::size_t tiles_x, std::size_t tiles_y) -> HeightMap {
     const auto width = tiles_x * TILE_SIZE;

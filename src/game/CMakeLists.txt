@@ -11,6 +11,8 @@ target_sources(${PROJECT_NAME}-game PRIVATE
     ./background/systems.cpp
     ./camera/systems.cpp
     ./combat/components.cpp
+    ./data/components.cpp
+    ./data/systems.cpp
     ./dev/systems.cpp
     ./dev/utils.cpp
     ./game.cpp

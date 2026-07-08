@@ -4,12 +4,13 @@
 #include "../solids/components.hpp"
 #include "../combat/components.hpp"
 #include "../tilemap/components.hpp"
-#include "../constants.hpp"
+#include "../data/components.hpp"
 
 namespace cfu::comp {
 
 auto create_player(entt::registry& registry, entt::entity entity) -> void {
-    const auto desc = PLAYER_STATS_DESCS[0];
+    const auto& data = registry.ctx().get<comp::GameData>();
+    const auto& desc = data.balance.player.evo_1;
 
     registry.emplace<Player>(entity);
     registry.emplace<cfu::comp::Transform>(
@@ -23,14 +24,14 @@ auto create_player(entt::registry& registry, entt::entity entity) -> void {
 
     registry.emplace<Grounded>(entity, 0.0f);
 
-    registry.emplace<Hp>(entity, desc.max_hp, desc.max_hp);
-    registry.emplace<MoveSpeed>(entity, desc.move_speed);
+    registry.emplace<Hp>(entity, float(desc.max_hp), float(desc.max_hp));
+    registry.emplace<MoveSpeed>(entity, float(desc.move_speed));
     registry.emplace<MeleeAttack>(
         entity,
         MeleeAttack {
-            .damage = desc.damage,
-            .attack_speed = desc.attack_speed,
-            .attack_radius = desc.attack_radius,
+            .damage = float(desc.damage),
+            .attack_speed = float(desc.attack_speed),
+            .attack_radius = float(desc.attack_radius),
         }
     );
 

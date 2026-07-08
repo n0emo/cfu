@@ -94,6 +94,7 @@
       "name": "x86_64-w64-mingw32",
       "hidden": true,
       "inherits": ["base"],
+      "binaryDir": "${sourceDir}/build/mingw",
       "cacheVariables": {
         "CMAKE_SYSTEM_NAME": "Windows",
         "CMAKE_SYSTEM_PROCESSOR": "x86_64",
