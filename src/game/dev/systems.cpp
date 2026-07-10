@@ -46,6 +46,9 @@ auto draw_dev(entt::registry& registry) -> void {
     if (IsKeyPressed(KEY_F1)) {
         systems::reload_shaders(registry);
         systems::reload_voxel_models(registry);
+        // TODO: reload_audio
+        // TODO: reload_textures
+        // TODO: reload_fonts
     }
 
     draw_dev_panel(registry);

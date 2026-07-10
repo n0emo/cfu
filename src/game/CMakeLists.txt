@@ -7,6 +7,9 @@ else()
 endif()
 
 target_sources(${PROJECT_NAME}-game PRIVATE
+    ./audio/components.cpp
+    ./audio/resource.cpp
+    ./audio/systems.cpp
     ./background/components.cpp
     ./background/systems.cpp
     ./camera/systems.cpp
@@ -17,6 +20,8 @@ target_sources(${PROJECT_NAME}-game PRIVATE
     ./dev/utils.cpp
     ./enemy/components.cpp
     ./enemy/systems.cpp
+    ./fonts/resource.cpp
+    ./fonts/systems.cpp
     ./game.cpp
     ./in_game/state.cpp
     ./main_menu/state.cpp
@@ -32,6 +37,8 @@ target_sources(${PROJECT_NAME}-game PRIVATE
     ./solids/components.cpp
     ./solids/systems.cpp
     ./states.cpp
+    ./textures/resource.cpp
+    ./textures/systems.cpp
     ./tilemap/components.cpp
     ./tilemap/systems.cpp
     ./vox/resource.cpp
