@@ -5,6 +5,7 @@
 #include <expected>
 #include <format>
 #include <cmath>
+#include <charconv>
 
 #include "../solids/components.hpp"
 #include "../constants.hpp"
@@ -39,21 +40,30 @@ namespace detail {
         return Vector3(float(x), float(y), float(z));
     }
 
+    static inline auto parse_int(std::string_view sv) -> Result<int> {
+        auto begin = sv.data();
+        auto end = sv.data() + sv.size();
+        auto value = int {};
+        if (auto [ptr, ec] = from_chars(begin, end, value); ec != errc() || ptr != end) {
+            return unexpected(format("ERROR: Could not parse `{}` as int`\n", sv));
+        } else {
+            return value;
+        }
+    }
+
     static inline auto parse_xyz(Args args) -> Result<XYZ> {
         if (args.size() != 3) {
             return unexpected(format("ERROR: Incorrect number of args\nNeed 3, got {}\n", args.size()));
         }
 
-        auto x = int {}, y = int {}, z = int {};
+        auto x = parse_int(args[0]);
+        if (!x) return std::unexpected(x.error());
+        auto y = parse_int(args[1]);
+        if (!y) return std::unexpected(y.error());
+        auto z = parse_int(args[2]);
+        if (!z) return std::unexpected(z.error());
 
-        if (auto [ptr, ec] = from_chars(args[0].begin(), args[0].end(), x); ec != errc() || ptr != args[0].end())
-            return unexpected(format("ERROR: Could not parse `{}` as int`\n", args[0]));
-        if (auto [ptr, ec] = from_chars(args[1].begin(), args[1].end(), y); ec != errc() || ptr != args[1].end())
-            return unexpected(format("ERROR: Could not parse `{}` as int`\n", args[1]));
-        if (auto [ptr, ec] = from_chars(args[2].begin(), args[2].end(), z); ec != errc() || ptr != args[2].end())
-            return unexpected(format("ERROR: Could not parse `{}` as int`\n", args[2]));
-
-        return XYZ {x, y, z};
+        return XYZ {*x, *y, *z};
     }
 
     static inline auto parse_xyz_region(span<string_view> args) -> expected<XYZRegion, string> {
@@ -61,23 +71,20 @@ namespace detail {
             return unexpected(format("ERROR: Incorrect number of args\nNeed 3, got {}\n", args.size()));
         }
 
-        auto x1 = int {}, y1 = int {}, z1 = int {};
-        auto x2 = int {}, y2 = int {}, z2 = int {};
+        auto x1 = parse_int(args[0]);
+        if (!x1) return std::unexpected(x1.error());
+        auto y1 = parse_int(args[1]);
+        if (!y1) return std::unexpected(y1.error());
+        auto z1 = parse_int(args[2]);
+        if (!z1) return std::unexpected(z1.error());
+        auto x2 = parse_int(args[3]);
+        if (!x2) return std::unexpected(x2.error());
+        auto y2 = parse_int(args[4]);
+        if (!y2) return std::unexpected(y2.error());
+        auto z2 = parse_int(args[5]);
+        if (!z2) return std::unexpected(z2.error());
 
-        if (auto [ptr, ec] = from_chars(args[0].begin(), args[0].end(), x1); ec != errc() || ptr != args[0].end())
-            return unexpected(format("ERROR: Could not parse `{}` as int`\n", args[0]));
-        if (auto [ptr, ec] = from_chars(args[1].begin(), args[1].end(), y1); ec != errc() || ptr != args[1].end())
-            return unexpected(format("ERROR: Could not parse `{}` as int`\n", args[1]));
-        if (auto [ptr, ec] = from_chars(args[2].begin(), args[2].end(), z1); ec != errc() || ptr != args[2].end())
-            return unexpected(format("ERROR: Could not parse `{}` as int`\n", args[2]));
-        if (auto [ptr, ec] = from_chars(args[3].begin(), args[3].end(), x2); ec != errc() || ptr != args[3].end())
-            return unexpected(format("ERROR: Could not parse `{}` as int`\n", args[3]));
-        if (auto [ptr, ec] = from_chars(args[4].begin(), args[4].end(), y2); ec != errc() || ptr != args[4].end())
-            return unexpected(format("ERROR: Could not parse `{}` as int`\n", args[4]));
-        if (auto [ptr, ec] = from_chars(args[5].begin(), args[5].end(), z2); ec != errc() || ptr != args[5].end())
-            return unexpected(format("ERROR: Could not parse `{}` as int`\n", args[5]));
-
-        return XYZRegion {XYZ {x1, y1, z1}, XYZ {x2, y2, z2}};
+        return XYZRegion {XYZ {*x1, *y1, *z1}, XYZ {*x2, *y2, *z2}};
     }
 
     static inline auto set_cursor(entt::registry& registry, Vector3 position, Vector3 size, Color color) {
