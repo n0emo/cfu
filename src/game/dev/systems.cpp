@@ -9,7 +9,6 @@
 #include "../states.hpp"
 #include "../vox/systems.hpp"
 #include "./components.hpp"
-#include "./utils.hpp"
 #include "audio/systems.hpp"
 #include "fonts/systems.hpp"
 #include "textures/systems.hpp"
@@ -18,6 +17,10 @@ namespace cfu::systems {
 
 auto setup_dev(entt::registry& registry) -> void {
     registry.ctx().insert_or_assign(comp::DevSettings {});
+
+    auto font = ImGui::GetIO().Fonts->AddFontFromFileTTF("./assets/fonts/RobotoMono-VariableFont.ttf");
+    ImGui::GetIO().FontDefault = font;
+
     setup_entt_editor(registry);
     setup_tilemap_editor(registry);
     setup_data_editor(registry);
