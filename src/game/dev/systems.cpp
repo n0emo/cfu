@@ -10,7 +10,9 @@
 #include "../vox/systems.hpp"
 #include "./components.hpp"
 #include "./utils.hpp"
+#include "audio/systems.hpp"
 #include "fonts/systems.hpp"
+#include "textures/systems.hpp"
 
 namespace cfu::systems {
 
@@ -41,8 +43,8 @@ auto draw_dev(entt::registry& registry) -> void {
         systems::reload_shaders(registry);
         systems::reload_voxel_models(registry);
         systems::reload_fonts(registry);
-        // TODO: reload_textures
-        // TODO: reload_fonts
+        systems::reload_textures(registry);
+        systems::reload_audio(registry);
     }
 
     draw_dev_panel(registry);

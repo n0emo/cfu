@@ -1,16 +1,14 @@
 #pragma once
 
+#include <entt/fwd.hpp>
+#include <raylib.h>
+
 namespace cfu::systems {
 
-// TODO: setup_audio
-// TODO: destroy_audio
+auto setup_audio(entt::registry& registry) -> void;
+auto destroy_audio() -> void;
 
-// TODO: reload_audio
-// TODO: reload_music
-// TODO: reload_sounds
-
-// TODO: update_audio
-// TODO: update_sounds
-// TODO: update_music
+auto reload_audio(entt::registry& registry) -> void;
+auto update_audio(entt::registry& registry) -> void;
 
 } // namespace cfu::systems
